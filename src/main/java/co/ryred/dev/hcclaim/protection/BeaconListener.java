@@ -67,7 +67,7 @@ public class BeaconListener implements Listener {
 
         try {
             UUID owner = ProtectionPlanner.getBlockOwner(plugin, e.getBlock());
-            if (!e.getPlayer().getUniqueId().equals(owner)) {
+            if (owner != null && !e.getPlayer().getUniqueId().equals(owner)) {
                 e.getPlayer().sendMessage(ChatColor.YELLOW + "Only the area owner can build monuments in their area.");
                 e.setBuild(false);
                 e.setCancelled(true);
