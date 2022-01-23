@@ -15,16 +15,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class TrustTabComplete implements TabCompleter {
-
-    private final HCClaimPlugin plugin;
-
-    public TrustTabComplete(HCClaimPlugin plugin) {
-        this.plugin = plugin;
-    }
+public record TrustTabComplete(HCClaimPlugin plugin) implements TabCompleter {
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable
+    List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> ret = new ArrayList<>();
         if (args.length <= 0) return ret;
         String lastArg = args[args.length - 1].toLowerCase();
