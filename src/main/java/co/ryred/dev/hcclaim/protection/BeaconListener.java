@@ -1,7 +1,6 @@
 package co.ryred.dev.hcclaim.protection;
 
 import co.ryred.dev.hcclaim.HCClaimPlugin;
-import co.ryred.dev.hcclaim.chunk.ChunkData;
 import co.ryred.dev.hcclaim.particles.ParticleTask;
 import io.papermc.paper.event.block.BellRingEvent;
 import org.bukkit.ChatColor;
@@ -94,16 +93,26 @@ public class BeaconListener implements Listener {
     public void onBellRing(BellRingEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
 
-        ChunkData chunkData = plugin.getChunkManager().getChunkData(e.getBlock().getChunk());
-        if (chunkData == null) {
-            plugin.getLogger().warning("Chunk not loaded.");
-            player.sendMessage(ChatColor.RED + "An error has occurred whilst checking the owner of this block!");
-            player.sendMessage(ChatColor.RED + "   You are temporarily not allowed to claim this area.");
+        try {
+            if (!ProtectionPlanner.isMonument(e.getBlock())) {
+                return;
+            }
+        } catch (ProtectionPlanner.NoWhereNearAMonumentException ignored) {
             return;
         }
 
-        UUID ownerUUID = chunkData.getOwner(e.getBlock().getLocation());
-        if (player.getUniqueId().equals(ownerUUID)) {
+
+        UUID owner;
+        try {
+            owner = ProtectionPlanner.getBlockOwner(plugin, e.getBlock());
+        } catch (ProtectionPlanner.ChunkNotLoadedException ex) {
+            plugin.getLogger().warning("Chunk not loaded.");
+            player.sendMessage(ChatColor.RED + "An error has occurred whilst checking the owner of this block!");
+            player.sendMessage(ChatColor.RED + "   You are temporarily not allowed to place/break blocks here.");
+            return;
+        }
+
+        if (player.getUniqueId().equals(owner)) {
             ParticleTask pt = new ParticleTask(plugin, e.getBlock().getLocation(), radius, 0.5d);
             pt.runTaskTimer(plugin, 0, 4);
             return;
