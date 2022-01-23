@@ -1,0 +1,15 @@
+main: co.ryred.dev.hcclaim.HCClaimPlugin
+name: HCClaim
+author: 'Cory Redmond'
+description: 'Bringing the hardcore to hc.'
+api-version: 1.18
+version: 1.0.0
+load: STARTUP
+
+commands:
+  trust:
+    description: 'Trust a player to build on all your protected areas'
+    usage: '/trust @p'
+  untrust:
+    description: 'Remove trust of a player to build on all your protected areas'
+    usage: '/untrust @p'
