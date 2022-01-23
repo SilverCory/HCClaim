@@ -40,11 +40,13 @@ public record TrustCommand(HCClaimPlugin plugin, boolean trust) implements Comma
 
         String trustedText = trust ? "trusted" : "untrusted";
         if (!notFoundUsers.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "Unable to find the following players:");
+            String playerPlural = notFoundUsers.size() == 1 ? "player" : "players";
+            sender.sendMessage(ChatColor.RED + "Unable to find the following " + playerPlural + ":");
             sender.sendMessage(ChatColor.RED + "   " + String.join(", ", notFoundUsers));
         }
         if (!foundUsers.isEmpty()) {
-            sender.sendMessage(ChatColor.GREEN + "The following player have been " + trustedText + ":");
+            String playerPlural = notFoundUsers.size() == 1 ? "player has" : "players have";
+            sender.sendMessage(ChatColor.GREEN + "The following " + playerPlural + " been " + trustedText + ":");
             sender.sendMessage(ChatColor.GREEN + "   " + String.join(", ", foundUsers));
         }
 
