@@ -22,7 +22,7 @@ public record TrustTabComplete(HCClaimPlugin plugin) implements TabCompleter {
     List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> ret = new ArrayList<>();
         if (args.length <= 0) return ret;
-        String lastArg = args[args.length - 1].toLowerCase();
+        String lastArg = args[args.length - 1];
 
         StringUtil.copyPartialMatches(
                 lastArg,
@@ -30,7 +30,6 @@ public record TrustTabComplete(HCClaimPlugin plugin) implements TabCompleter {
                         .limit(20)
                         .map(OfflinePlayer::getName)
                         .filter(Objects::nonNull)
-                        .map(String::toLowerCase)
                         .collect(Collectors.toList()),
                 ret
         );
