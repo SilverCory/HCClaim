@@ -34,7 +34,7 @@ public class ProtectionPlanner {
         return locations;
     }
 
-    public static boolean isMonument(Block block) throws NoWhereNearAMonumentException {
+    public static boolean isMonument(Block block) throws NoWhereNearAMonumentException, NotEnoughVerticalException {
         int yOffset;
         Material requiredBlock;
 
@@ -50,7 +50,25 @@ public class ProtectionPlanner {
             default -> throw new NoWhereNearAMonumentException(); // So I've gotten used to writing go with multiple returns...
         }
 
-        return block.getRelative(0, yOffset, 0).getType().equals(requiredBlock);
+        if (!block.getRelative(0, yOffset, 0).getType().equals(requiredBlock)) {
+            return false;
+        }
+
+        if (block.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
+            return true;
+        }
+
+        if (block.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+            // TODO manage this.
+            return false;
+        }
+
+        if (block.getLightFromSky() == 0) {
+            throw new NotEnoughVerticalException();
+        }
+
+        return true;
+
     }
 
     public static Block getBellBlock(Block block) {
@@ -75,4 +93,6 @@ public class ProtectionPlanner {
     public static class NoWhereNearAMonumentException extends Throwable {
     }
 
+    public static class NotEnoughVerticalException extends Throwable {
+    }
 }

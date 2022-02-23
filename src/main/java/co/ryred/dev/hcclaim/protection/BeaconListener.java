@@ -29,7 +29,7 @@ public class BeaconListener implements Listener {
             if (!ProtectionPlanner.isMonument(e.getBlock())) {
                 return;
             }
-        } catch (ProtectionPlanner.NoWhereNearAMonumentException ignored) {
+        } catch (ProtectionPlanner.NoWhereNearAMonumentException | ProtectionPlanner.NotEnoughVerticalException ignored) {
             return;
         }
 
@@ -61,7 +61,7 @@ public class BeaconListener implements Listener {
                 e.getPlayer().sendMessage(ChatColor.DARK_GREEN + "Place a bell on top of a block of obsidian to get your area protected!");
                 return;
             }
-        } catch (ProtectionPlanner.NoWhereNearAMonumentException ignored) {
+        } catch (ProtectionPlanner.NoWhereNearAMonumentException | ProtectionPlanner.NotEnoughVerticalException ignored) {
             return;
         }
 
@@ -97,7 +97,7 @@ public class BeaconListener implements Listener {
             if (!ProtectionPlanner.isMonument(e.getBlock())) {
                 return;
             }
-        } catch (ProtectionPlanner.NoWhereNearAMonumentException ignored) {
+        } catch (ProtectionPlanner.NoWhereNearAMonumentException | ProtectionPlanner.NotEnoughVerticalException ignored) {
             return;
         }
 
@@ -119,7 +119,7 @@ public class BeaconListener implements Listener {
         }
 
         // TODO logic for takeover.
-        player.sendMessage("Takeover initiated.");
+        player.sendMessage(ChatColor.BLUE + "You cannot currently take over this area.");
     }
 
 }
